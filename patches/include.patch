@@ -1,0 +1,30 @@
+diff -ruN include/binfhe-base-scheme.h include.new/binfhe-base-scheme.h
+--- include/binfhe-base-scheme.h	2024-01-03 13:15:56.844505790 +0100
++++ include.new/binfhe-base-scheme.h	2024-01-03 13:33:38.865404671 +0100
+@@ -55,6 +55,8 @@
+     LWESwitchingKey KSkey;
+     // public key
+     LWEPublicKey Pkey;
++    // ring key
++    NativePoly skN;
+ } RingGSWBTKey;
+ 
+ /**
+diff -ruN include/binfhe-constants.h include.new/binfhe-constants.h
+--- include/binfhe-constants.h	2024-01-03 13:16:42.193299327 +0100
++++ include.new/binfhe-constants.h	2024-01-03 13:32:41.556480380 +0100
+@@ -97,8 +97,13 @@
+                         // optimize runtime by finding a non-power-of-two n for 4 binary inputs
+     STD256Q_4,          // more than 256 bits of security for quantum computer attacks -
+                         // optimize runtime by finding a non-power-of-two n for 4 binary inputs
+-    SIGNED_MOD_TEST     // special parameter set for confirming the signed modular
++    SIGNED_MOD_TEST,     // special parameter set for confirming the signed modular
+                         // reduction in the accumulator updates works correctly
++    SET_I,
++    SET_II,
++    SET_III,
++    SET_IV,
++    SET_V
+ };
+ std::ostream& operator<<(std::ostream& s, BINFHE_PARAMSET f);
+ 

@@ -1,0 +1,35 @@
+diff -ruN lib/binfhe-base-scheme.cpp lib.new.noiseless/binfhe-base-scheme.cpp
+--- lib/binfhe-base-scheme.cpp	2024-01-03 13:16:42.193299327 +0100
++++ lib.new.noiseless/binfhe-base-scheme.cpp	2024-01-03 13:37:14.876918333 +0100
+@@ -63,6 +63,7 @@
+     skNPoly.SetFormat(Format::EVALUATION);
+ 
+     ek.BSkey = ACCscheme->KeyGenAcc(RGSWParams, skNPoly, LWEsk);
++    ek.skN = skNPoly;
+ 
+     return ek;
+ }
+diff -ruN lib/binfhecontext.cpp lib.new.noiseless/binfhecontext.cpp
+--- lib/binfhecontext.cpp	2024-01-03 13:16:42.193299327 +0100
++++ lib.new.noiseless/binfhecontext.cpp	2024-01-03 13:39:45.559390838 +0100
+@@ -114,7 +114,7 @@
+ 
+ void BinFHEContext::GenerateBinFHEContext(BINFHE_PARAMSET set, BINFHE_METHOD method) {
+     enum { PRIME = 0 };  // value for modKS if you want to use the intermediate prime for modulus for key switching
+-    constexpr double STD_DEV = 3.19;
++    constexpr double STD_DEV = 0;
+     // clang-format off
+     const std::unordered_map<BINFHE_PARAMSET, BinFHEContextParams> paramsMap({
+         //               numberBits|cyclOrder|latticeParam|  mod|   modKS|  stdDev| baseKS| gadgetBase| baseRK| numAutoKeys| keyDist
+@@ -142,6 +142,11 @@
+         { STD192Q_4,         { 34,     4096,         980, 2048, 1 << 17, STD_DEV,     16,    1 << 12,  32,    10,  UNIFORM_TERNARY} },
+         { STD256Q_4,         { 27,     4096,        1625, 4096, 1 << 21, STD_DEV,     16,    1 <<  6,  32,    10,  UNIFORM_TERNARY} },
+         { SIGNED_MOD_TEST,   { 28,     2048,         512, 1024,   PRIME, STD_DEV,     25,    1 <<  7,  23,    10,  UNIFORM_TERNARY} },
++        { SET_I, {28, 2048, 600, 1024, 1 << 17, STD_DEV, 32, 1 << 7, 23, 10, UNIFORM_TERNARY}},
++        { SET_II, {28, 2048, 600, 1024, 1 << 17, STD_DEV, 32, 1 << 7,23, 10, UNIFORM_TERNARY}},
++        { SET_III, {36, 2048, 448, 1024, 1 << 18, STD_DEV, 32, 1 << 12,23, 10, UNIFORM_TERNARY}},
++        { SET_IV, {42, 4096, 600, 2048, 1 << 24, STD_DEV, 128, 1 << 14,23, 20, UNIFORM_TERNARY}},
++        { SET_V, {52, 4096, 700, 2048, 1 << 24, STD_DEV, 32, 1 << 26,23, 20, UNIFORM_TERNARY}}
+     });
+     // clang-format on
+ 
